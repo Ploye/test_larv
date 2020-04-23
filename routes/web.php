@@ -2,6 +2,10 @@
 use App\Dosen;
 use App\Mahasiswa;
 use App\Matakuliah;
+use App\Post;
+use App\Video;
+use App\Comment;
+use App\Tag;
 // use App\Jadwal;
 use Illuminate\Support\Facades\Route;
 
@@ -118,4 +122,64 @@ Route::get('/', function () {
         foreach ($krs as $mhs) {
             echo $mhs->npm.' - '.$mhs->kode_matakuliah.'</br>';
         }
+    });
+    //Polymorphic
+    //One to One
+    Route::get('post/{id}/comment', function ($id) {
+        return Post::find($id)->comment;
+    });
+    Route::get('video/{id}/comment', function ($id) {
+        return Video::find($id)->comment;
+    });
+    //One To Many 
+    Route::get('post/{id}/comments', function ($id) {
+        return Post::find($id)->comments;
+    });
+    Route::get('video/{id}/comments', function ($id) {
+        $parentPosts = Video::find($id);
+
+        echo $parentPosts->title;
+        echo "</br> Komentar: </br>";
+
+        $videos = $parentPosts->comments;
+        foreach ($videos as $video) {
+            echo ' - '.$video->content.'<br/>';
+        }
+    });
+    //Many to Many
+    Route::get('tags/{id}/post', function ($id) {
+        return Post::find($id)->tags;
+    });
+    Route::get('tags/{id}/video', function ($id) {
+        return Video::find($id)->tags;
+    });
+    //INSERT
+    Route::get('video/{id}/post_comment', function ($id) {
+        $comment = new comment([
+            'content' => 'ini adalah komentar...  '
+        ]);
+        $video = Video::find($id);
+        $video->comments()->save($comment);
+    });
+    //UPDATE
+    Route::get('video/{id}/update_comment', function ($id) {
+        $comment = Comment::find($id);
+        $comment->content = 'Update Komentar';
+        $comment->save();
+    });
+    //DELETE
+    Route::get('video/{id}/delete_comment', function ($id) {
+        $comment = Comment::find($id);
+       
+        $comment->delete();
+    });
+    //Many to Many
+    //INSERT
+    Route::get('video/create', function () {
+       $video = Video::create([
+            'title' => 'Video Ketiga',
+            'path' => 'Video_3.mp4'
+       ]);
+       $tag = Tag::find(2);
+       $video->tags()->save($tag);
     });
