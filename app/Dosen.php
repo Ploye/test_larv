@@ -20,4 +20,16 @@ class Dosen extends Model
         'nama',
         'keterangan'
     ];
+    //One to one
+    public function mahasiswa(){
+        return $this->hasOne('App\Mahasiswa','nidn');
+    }
+    //One to Many
+    public function allmhs(){
+        return $this->hasMany('App\Mahasiswa','nidn');
+    }
+    //Many to Many
+    public function matkul(){
+        return $this->belongsToMany('App\Matakuliah','jadwal','nidn','kode_matakuliah');
+    }
 }

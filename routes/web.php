@@ -1,5 +1,8 @@
 <?php
 use App\Dosen;
+use App\Mahasiswa;
+use App\Matakuliah;
+// use App\Jadwal;
 use Illuminate\Support\Facades\Route;
 
 /*
@@ -40,7 +43,7 @@ Route::get('/', function () {
         // $dosen->nama = 'albert';
 
         // $dosen->save();
-        Dosen::create(['nidn'=>'222','nama'=>'siiyeu','keterangan'=>'Aktif']);
+        Dosen::create(['nidn'=>'333','nama'=>'ahe','keterangan'=>'Aktif']);
     });
 
     Route::get('/update', function(){
@@ -49,13 +52,13 @@ Route::get('/', function () {
         // $dosen->nama =  'SiKetiga';
         // $dosen->save();
         Dosen::where('status', 1)
-            ->update(['keterangan'=> 'Aktif']);
+            ->update(['keterangan'=> 'Aktif Euy']);
     });
 
     Route::get('/delete',function(){
         // $dosen = Dosen::find('555');
         // $dosen->delete();
-        Dosen::destroy('444');
+        Dosen::destroy('222');
         // Dosen::where('status',0)->delete();
     });
 
@@ -75,6 +78,32 @@ Route::get('/', function () {
 
     Route::get('/forcedelete',function(){
         $dosens = Dosen::onlyTrashed()
-        ->where('nidn','444')
+        ->where('nidn','222')
         ->forceDelete();
+    });
+
+    //Eloquent Relationship
+    //One to one
+    Route::get('dosen/mhs/{nidn}', function ($nidn) {
+        return Dosen::find($nidn)->nama;
+    });
+    //One to one Inverse
+    Route::get('mhs/dosen/{npm}', function($npm) {
+        return Mahasiswa::find($npm)->dosen->nama.'</br>';
+    });
+    //One to Many
+    Route::get('dosen/allmhs/{nidn}', function ($nidn) {
+        // return Dosen::find($nidn)->allmhs;
+        $mhs = Dosen::find($nidn)->allmhs;
+        foreach ($mhs as $mahasiswa) {
+            echo $mahasiswa->nama."<br/>";
+        }
+    });
+    //Many to Many
+    Route::get('dosen/matkul/{nidn}', function ($nidn) {
+        return Dosen::find($nidn)->matkul;
+    });
+    //Many to Many Inverse
+    Route::get('matkul/dosen/{kode_matkul}', function ($kode_matkul) {
+        return Matakuliah::find($kode_matkul)->dosens;
     });
