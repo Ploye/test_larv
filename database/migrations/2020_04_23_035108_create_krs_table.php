@@ -14,8 +14,21 @@ class CreateKrsTable extends Migration
     public function up()
     {
         Schema::create('krs', function (Blueprint $table) {
-            $table->id();
+            $table->increments('id');
+            $table->char('npm', 10)->index();
+            $table->char('kode_matakuliah',10);
             $table->timestamps();
+
+            $table->foreign('npm')
+            ->references('npm')
+            ->on('mahasiswa')
+            ->onUpdate('cascade');
+
+            $table->foreign('kode_matakuliah')
+            ->references('kode_matakuliah')
+            ->on('matakuliah')
+            ->onUpdate('cascade');
+
         });
     }
 

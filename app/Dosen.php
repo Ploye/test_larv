@@ -32,4 +32,26 @@ class Dosen extends Model
     public function matkul(){
         return $this->belongsToMany('App\Matakuliah','jadwal','nidn','kode_matakuliah');
     }
+    //Has one Through
+    public function oneKrs(){
+        return $this->hasOneThrough(
+            'App\Krs',
+            'App\Mahasiswa',
+            'nidn',
+            'npm',
+            'nidn',
+            'npm'
+        );
+    }
+     //Has Many Through
+     public function ManyKrs(){
+        return $this->hasManyThrough(
+            'App\Krs',
+            'App\Mahasiswa',
+            'nidn',
+            'npm',
+            'nidn',
+            'npm'
+        );
+    }
 }

@@ -107,3 +107,15 @@ Route::get('/', function () {
     Route::get('matkul/dosen/{kode_matkul}', function ($kode_matkul) {
         return Matakuliah::find($kode_matkul)->dosens;
     });
+    //Has one Through
+    Route::get('dosen/krs/{nidn}', function ($nidn) {
+        return Dosen::find($nidn)->oneKrs;
+    });
+     //Has Many Through
+     Route::get('dosen/manykrs/{nidn}', function ($nidn) {
+        // return Dosen::find($nidn)->manyKrs;
+        $krs = Dosen::find($nidn)->manyKrs->where('npm','101');
+        foreach ($krs as $mhs) {
+            echo $mhs->npm.' - '.$mhs->kode_matakuliah.'</br>';
+        }
+    });
