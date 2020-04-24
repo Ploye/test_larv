@@ -6,6 +6,7 @@ use App\Post;
 use App\Video;
 use App\Comment;
 use App\Tag;
+// use App\Taggable;
 // use App\Jadwal;
 use Illuminate\Support\Facades\Route;
 
@@ -159,11 +160,13 @@ Route::get('/', function () {
             'content' => 'ini adalah komentar...  '
         ]);
         $video = Video::find($id);
+
         $video->comments()->save($comment);
     });
     //UPDATE
     Route::get('video/{id}/update_comment', function ($id) {
         $comment = Comment::find($id);
+
         $comment->content = 'Update Komentar';
         $comment->save();
     });
@@ -183,3 +186,18 @@ Route::get('/', function () {
        $tag = Tag::find(2);
        $video->tags()->save($tag);
     });
+    //-TUGAS-//
+    //UPDATE
+    Route::get('video/{video}/tag/{untag}/change/{tag}', function ($video, $untag, $tag) {
+        $video = Video::find($video);
+
+        $video->tags()->detach($untag);
+        $video->tags()->attach($tag);
+    });
+    //DELETE
+    Route::get('video/{video}/untag/{tag}', function ($video, $tag) {
+        $video = Video::find($video);
+
+        $video->tags()->detach($tag);
+    });
+    

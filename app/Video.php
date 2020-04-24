@@ -18,4 +18,5 @@ class Video extends Model
     function tags(){
         return $this->morphToMany('App\Tag','taggable');
     }
+    
 }
