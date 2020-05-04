@@ -201,3 +201,8 @@ Route::get('/', function () {
         $video->tags()->detach($tag);
     });
     
+    Route::get('/input', 'validation@input');
+    
+    Route::post('/proses', 'validation@proses');
+
+  
