@@ -17,6 +17,7 @@ class CreateKrsTable extends Migration
             $table->increments('id');
             $table->char('npm', 10)->index();
             $table->char('kode_matakuliah',10);
+            $table->integer('tahun_akademik')->length(10)->unsigned();
             $table->timestamps();
 
             $table->foreign('npm')

@@ -205,4 +205,5 @@ Route::get('/', function () {
     
     Route::post('/proses', 'validation@proses');
 
-  
+  //CRUD + MODAL
+    Route::resource('dosen', 'DosenController');

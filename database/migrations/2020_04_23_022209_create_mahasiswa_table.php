@@ -15,13 +15,20 @@ class CreateMahasiswaTable extends Migration
     {
         Schema::create('mahasiswa', function (Blueprint $table) {
             $table->char('npm', 10)->primary();
-            $table->char('nidn', 10)->index();
             $table->string('nama',20);
+            $table->year('tahun_masuk');
+            $table->integer('status')->length(10)->unsigned();
+            $table->char('nidn', 10)->index();
             $table->timestamps();
 
             $table->foreign('nidn')
             ->references('nidn')
             ->on('dosen')
+            ->onUpdate('cascade');
+
+            $table->foreign('npm')
+            ->references('npm')
+            ->on('krs')
             ->onUpdate('cascade');
         });
     }

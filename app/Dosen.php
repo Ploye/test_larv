@@ -53,5 +53,13 @@ class Dosen extends Model
             'nidn',
             'npm'
         );
+
+    }
+//Untuk Ajax
+    public static function getDosen($nidn){
+
+        $dosen = Dosen::where('nidn',$nidn)->get();
+        return $dosen;
+
     }
 }
